@@ -1,4 +1,4 @@
-1) git clone del repository
+1) git clone of repository
 2) initialize dvc
     - dvc init
     - dvc config core.analytics false # Disable analytics
