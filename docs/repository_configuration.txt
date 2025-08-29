@@ -1,6 +1,13 @@
 1) git clone del repository
 2) initialize dvc
     - dvc init
+    - dvc config core.analytics false # Disable analytics
+    - git commit -m "DVC Initialization"
     - mkdir dvc
+    - mkdir dvc/date
+    - mkdir dvc/models
     - dvc add ./dvc
+    - dvc config core.autostage true #to activate dvc autostaging
+    - dvc remote add -d <storage_name> <protocol>://<user>@<server_name>:<port>/<directory_path>
+      es: dvc remote add -d storage_xavier ssh://sogei46@77.39.130.76:5022/home/sogei46/dvc/vehicle_classifier_data
 

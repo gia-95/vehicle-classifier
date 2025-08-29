@@ -1,0 +1,5 @@
+[core]
+    remote = storage_xavier
+    autostage = true
+['remote "storage_xavier"']
+    url = ssh://sogei46@77.39.130.76:5022/home/sogei46/dvc/vehicle_classifier_data
