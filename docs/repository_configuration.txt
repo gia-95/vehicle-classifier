@@ -1,3 +1,4 @@
+##### STEPS FOR DVC CONFIG ######
 1) git clone of repository
 2) initialize dvc
     - dvc init
