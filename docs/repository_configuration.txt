@@ -1,0 +1,6 @@
+1) git clone del repository
+2) initialize dvc
+    - dvc init
+    - mkdir dvc
+    - dvc add ./dvc
+
