@@ -1,7 +1,7 @@
 # vehicle-classifier
 <p>Create local DVC structure:<br>
-   dvc---<br>
-        |<br>
-        |---data<br> 
-        |---models<br>
+&nbsp;&nbsp;&nbsp;dvc---<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---data<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---models<br>
 </p>
