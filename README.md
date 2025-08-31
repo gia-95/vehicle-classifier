@@ -1,9 +1,7 @@
 # vehicle-classifier
-
-Create local DVC structure:
-
-dvc---
-     |
-     |---data
-     |---models
-pippo
+<p>Create local DVC structure:<br>
+   dvc---<br>
+        |<br>
+        |---data<br> 
+        |---models<br>
+</p>
