@@ -16,9 +16,9 @@ class LeNetFeatExtractor(nn.Module) :
 class LeNetClassifier(nn.Module):
     def __init__(self):
         super(LeNetClassifier, self).__init__()
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc1 = nn.Linear(16 * 6 * 6, 120)
         self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+        self.fc3 = nn.Linear(84, 2)
     def forward(self, x):
         x = torch.flatten(x,1)
         x = F.relu(self.fc1(x))
