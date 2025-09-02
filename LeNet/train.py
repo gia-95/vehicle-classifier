@@ -35,22 +35,24 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-model = LeNet()
-
-trainable_parameters = [ p for p in model.parameters() if p.requires_grad ] 
-
-criterion = MSELoss()
-
-optimizer = torch.optim.Adam(trainable_parameters, lr = LEARNING_RATE )
-
-
 train_dataset = ImageFolder(TRAIN_DATASET_DIR, transform)
 train_loader = DataLoader(train_dataset, BATCH_SIZE, shuffle=True, num_workers=0)
 
 val_dataset = ImageFolder(VAL_DATASET_DIR, transform)
 val_loader = DataLoader(val_dataset, BATCH_SIZE, shuffle=False, num_workers=0)
 
+############ MODEL ##############
+
+model = LeNet()
+trainable_parameters = [ p for p in model.parameters() if p.requires_grad ] 
+criterion = MSELoss()
+optimizer = torch.optim.SGD(trainable_parameters, lr = LEARNING_RATE, momentum=0.9 )
+#optimizer = torch.optim.Adam(trainable_parameters, lr = LEARNING_RATE )
+#scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.1, mode='max',verbose=True)
 model = model.to(device)
+
+#################################
+
 
 for epoch in range(EPOCHS) :    
     
@@ -69,8 +71,6 @@ for epoch in range(EPOCHS) :
         outputs = model(inputs)
         
         _, preds = torch.max(outputs, 1)
-        
-        breakpoint()
         
         loss = criterion(outputs, labels)
         
