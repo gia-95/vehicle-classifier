@@ -1,19 +1,18 @@
 from LeNet import LeNet
 from torch.utils.tensorboard import SummaryWriter
 import time
-import numpy as np
 import torch
 from torch.nn import MSELoss, CrossEntropyLoss
-from torch.utils.data import DataLoader, Dataset
-from torchvision.datasets import ImageFolder, DatasetFolder
+from torch.utils.data import DataLoader
+from torchvision.datasets import ImageFolder
 from torchvision.transforms import transforms
-import datetime 
+import numpy as np
 
 
 #################  LeNet Param  #####################
 LEARNING_RATE = 0.001
-DYNAMIC_LR = True
-EPOCHS = 20
+DYNAMIC_LR = False
+EPOCHS = 1
 BATCH_SIZE = 16
 
 #################  Dataset dir ####################
@@ -31,6 +30,8 @@ hparams = {
 }
 RUN_NAME = f"run{int(time.time()*1000)}_lr_{'DYNAMIC'if DYNAMIC_LR else hparams['learning_rate']}_bs_{hparams['batch_size']}"
 writer = SummaryWriter(f'/Users/gmarini/dev/vehicle-classifier/logs/{RUN_NAME}')
+writer.add_text('Train dataset', 'TRAIN_DATASET_DIR')
+writer.add_text('Val dataset', 'VAL_DATASET_DIR')
 
 
 ################    TRAIN      ###########################
@@ -60,19 +61,21 @@ trainable_parameters = [ p for p in model.parameters() if p.requires_grad ]
 criterion = CrossEntropyLoss(reduction='mean') # 'mean' calcolacola il valore medio della loss sul batch (maggiore stabilità numerica rispetto ad utilizzare 'sum' che somma i singoli contributi di ogni immagine del batch)
                                                #  (mettendo 'sum', nel calcolo della running_loss (loss totale dell'epoca) quindi non devi poi moltiplicare per la dimensione del batch)
 optimizer = torch.optim.SGD(trainable_parameters, lr = LEARNING_RATE, momentum=0.9 )
-#optimizer = torch.optim.Adam(trainable_parameters, lr = LEARNING_RATE )
+# optimizer = torch.optim.Adam(trainable_parameters, lr = LEARNING_RATE )
 if DYNAMIC_LR :
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.1, mode='max')
 model = model.to(device)
 
 #################################
 
+best_train_acc = 0.0   
+best_val_acc = 0.0   
+final_loss = 0.0
+
+total_labels = []
+total_preds = []
 
 for epoch in range(EPOCHS) : 
-    
-    best_train_acc = 0.0   
-    best_val_acc = 0.0   
-    final_loss = 0.0
     
     current_lr = optimizer.param_groups[0]['lr']
     
@@ -96,6 +99,9 @@ for epoch in range(EPOCHS) :
         
         _, preds = torch.max(outputs, 1)
         
+        total_labels = total_labels + labels.data.cpu().tolist()
+        total_preds = total_preds + preds.data.cpu().tolist()
+        
         loss = criterion(outputs, labels) # Calcola il valore dell'errore tramite la loss
         
         loss.backward() # Calcola la direzione del gradiente per i vari parametri
@@ -104,6 +110,8 @@ for epoch in range(EPOCHS) :
         
         running_loss += loss.item() * inputs.size(0)
         running_corrects += torch.sum(preds == labels.data)
+
+
         
     train_loss = running_loss / len(train_dataset)
     train_acc = running_corrects.double() / len(train_dataset)
@@ -137,15 +145,15 @@ for epoch in range(EPOCHS) :
         
     
     ### Aggiungi valori a TensorBoard
-    if train_acc > best_train_acc:
-        best_train_acc = train_acc
+    if float(train_acc.item()) > best_train_acc :
+        best_train_acc = float(train_acc.item())
+    if float(val_acc.item()) > best_val_acc :
+        best_val_acc = float(val_acc.item())
     
-    if val_acc > best_val_acc:
-        best_val_acc = val_acc
-        
     writer.add_scalars("Accuracy", { "Train": train_acc, "Validation": val_acc},  epoch)
     writer.add_scalars("Loss", {"Train": train_loss, "Validation": val_loss}, epoch)
     writer.add_scalar("Learning Rate", current_lr, epoch)
+    
   
         
     ### Calcolo tempo di elaborazione dell'epoca
@@ -156,11 +164,14 @@ for epoch in range(EPOCHS) :
     
    
     print(f'Epoch [{epoch+1}/{EPOCHS}] LR: {current_lr} Train_Loss: {train_loss:.4f} Train_Acc: {train_acc:.4f} Val_Loss: {val_loss:.4f} Val_Acc: {val_acc:.4f} Elapsed_time: {time_str}')
- 
+
+
+
+writer.add_pr_curve('pr_curve', total_labels, total_preds)
  
 final_metrics = {
         'hparam/best_train_accuracy': best_train_acc,  
-        'hparam/best_val_accuracy': best_train_acc,  
+        'hparam/best_val_accuracy': best_val_acc,  
         'hparam/final_loss': final_loss         
     }
 writer.add_hparams(hparams, final_metrics)
