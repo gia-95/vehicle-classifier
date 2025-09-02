@@ -55,7 +55,7 @@ model = model.to(device)
 
 
 for epoch in range(EPOCHS) :    
-    
+    start_time = time.time() 
     model.train()
     
     running_loss = 0.0
@@ -84,4 +84,7 @@ for epoch in range(EPOCHS) :
     train_loss = running_loss / len(train_dataset)
     
     train_acc = running_corrects.double() / len(train_dataset)
+    end_time = time.time()
+    elapsed_time = end_time-start_time
+
 
