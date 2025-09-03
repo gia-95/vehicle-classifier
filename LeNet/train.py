@@ -124,7 +124,7 @@ for epoch in range(EPOCHS) :
     running_loss = 0.0
     running_corrects = 0
     
-    with torch.no_grad() :
+    with torch.no_grad() :# con questa impostazione evitiamo che venga inutilmente aggiornato il grafo computazionale
     
         for inputs, labels in val_loader :
             
