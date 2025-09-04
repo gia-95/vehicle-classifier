@@ -7,7 +7,44 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import transforms
 import numpy as np
-
+########################################### INFO ########################################################
+#Optimizers:
+#
+#   Adadelta
+#   Adafactor
+#   Adagrad
+#   Adam
+#   AdamW
+#   SparseAdam
+#   Adamax
+#   ASGD
+#   LBFGS
+#   NAdam
+#   RAdam
+#   RMSprop
+#   Rprop
+#   SGD
+#
+#Tune the learning rate during optimization:
+#
+#   lr_scheduler.LRScheduler			        Adjusts the learning rate during optimization:
+#   lr_scheduler.LambdaLR				        Sets the initial learning rate.
+#   lr_scheduler.MultiplicativeLR			    Multiply the learning rate of each parameter group by the factor given in the specified function.
+#   lr_scheduler.StepLR				            Decays the learning rate of each parameter group by gamma every step_size epochs.
+#   lr_scheduler.MultiStepLR			        Decays the learning rate of each parameter group by gamma once the number of epoch reaches one of the milestones.
+#   lr_scheduler.ConstantLR				        Multiply the learning rate of each parameter group by a small constant factor.
+#   lr_scheduler.LinearLR				        Decays the learning rate of each parameter group by linearly changing small multiplicative factor.
+#   lr_scheduler.ExponentialLR			        Decays the learning rate of each parameter group by gamma every epoch.
+#   lr_scheduler.PolynomialLR			        Decays the learning rate of each parameter group using a polynomial function in the given total_iters.
+#   lr_scheduler.CosineAnnealingLR			    Set the learning rate of each parameter group using a cosine annealing schedule.
+#   lr_scheduler.ChainedScheduler			    Chains a list of learning rate schedulers.
+#   lr_scheduler.SequentialLR			        Contains a list of schedulers expected to be called sequentially during the optimization process.
+#   lr_scheduler.ReduceLROnPlateau			    Reduce learning rate when a metric has stopped improving.
+#   lr_scheduler.CyclicLR				        Sets the learning rate of each parameter group according to cyclical learning rate policy (CLR).
+#   lr_scheduler.OneCycleLR				        Sets the learning rate of each parameter group according to the 1cycle learning rate policy.
+#   lr_scheduler.CosineAnnealingWarmRestarts	Set the learning rate of each parameter group using a cosine annealing schedule.
+#
+#########################################################################################################
 
 #################  LeNet Param  #####################
 LEARNING_RATE = 0.001
