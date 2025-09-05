@@ -1,3 +1,17 @@
+#################################################################
+# TopNetwork.it                                                 #
+#################################################################
+# Script: LeNet.py                                              #
+# Date: 04/09/2025                                              #
+# Author: Gianluca Marini + Mauro Chiandone                     #
+# Usage: 
+#   from LeNet import LeNet
+#   myLeNet = LeNet(number_of_classes)
+# ###############################################################
+# This script implements a LeNet CNN class from scratch         # 
+# uses PyTorch framework                                       #
+#################################################################
+
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -14,11 +28,11 @@ class LeNetFeatExtractor(nn.Module) :
         return x
         
 class LeNetClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self,NUMBER_OF_CLASSES):
         super(LeNetClassifier, self).__init__()
         self.fc1 = nn.Linear(16 * 6 * 6, 120)
         self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 2)
+        self.fc3 = nn.Linear(84, NUMBER_OF_CLASSES)
     def forward(self, x):
         x = torch.flatten(x,1)
         x = F.relu(self.fc1(x))
@@ -27,10 +41,10 @@ class LeNetClassifier(nn.Module):
         return x
     
 class LeNet(nn.Module):
-    def __init__(self):
+    def __init__(self,NUMBER_OF_CLASSES):
         super(LeNet, self).__init__()
         self.feat = LeNetFeatExtractor()
-        self.classifer = LeNetClassifier()
+        self.classifer = LeNetClassifier(NUMBER_OF_CLASSES)
     def forward(self, x):
         x = self.feat(x)
         x = self.classifer(x)
