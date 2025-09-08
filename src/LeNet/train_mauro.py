@@ -25,6 +25,7 @@ from torchvision.datasets import ImageFolder
 from torchvision.transforms import transforms
 import numpy as np
 import argparse
+
 ########################################### INFO ########################################################
 #Optimizers:
 #
@@ -256,7 +257,6 @@ if __name__=="__main__":
 #    }
     
     hparams = {
-        'model': f'{model._get_name()}',
         'learning_rate': LEARNING_RATE,
         'batch_size': BATCH_SIZE,
         'epochs': EPOCHS,
@@ -268,6 +268,7 @@ if __name__=="__main__":
             'hparam/final_loss': train_loss         
         }
     
+
     writer.add_hparams(hparams, final_metrics)
     
     ###########################################################

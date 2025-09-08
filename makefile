@@ -51,7 +51,6 @@ build:
 tb:
 	tensorboard --logdir $(WRITER_DIR)
 train:
-	python ./src/LeNet/train_mauro.py --lr 0.001 --epochs 10
-	python ./src/LeNet/train_mauro.py --lr 0.01 --epochs 10
+	python ./src/LeNet/train_mauro.py --lr 0.01 --epochs 3
 test:
 	python ./src/test.py
